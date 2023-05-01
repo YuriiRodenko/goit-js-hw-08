@@ -6,17 +6,10 @@ const form = document.querySelector('.feedback-form');
 const inputEmail = document.querySelector('.feedback-form input');
 const inputMessage = document.querySelector('.feedback-form textarea');
 
-form.addEventListener('submit', onFormSubmit);
 form.addEventListener('input', throttle(onFormInput, 500));
+form.addEventListener('submit', onFormSubmit);
 
 populateTextarea();
-
-function onFormSubmit(e) {
-  e.preventDefault();
-  e.target.reset();
-  localStorage.removeItem(STORAGE_KEY);
-  console.log(formData);
-}
 
 function onFormInput() {
   formData.email = inputEmail.value;
@@ -31,4 +24,16 @@ function populateTextarea() {
     inputEmail.value = parsedSettings.email;
     inputMessage.value = parsedSettings.message;
   }
+}
+
+function onFormSubmit(e) {
+  formData.email = inputEmail.value;
+  formData.message = inputMessage.value;
+    if (formData.email === '' || formData.message === '') {
+      return alert('Будь ласка, заповніть усі поля форми!');
+    }
+      e.preventDefault();
+      e.target.reset();
+      localStorage.removeItem(STORAGE_KEY);
+      console.log(formData);
 }
